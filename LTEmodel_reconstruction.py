@@ -268,7 +268,7 @@ if __name__ == '__main__':
 
     # open a csv file with the parameters of the spectra
     # the first row is the header
-    param_df = pd.read_csv('5K_data/predicted_parameters_rf.csv')
+    param_df = pd.read_csv('data/5K_gen_files/predicted_parameters_rf.csv')
 
     # number of spectra to be simulated should be equal to the number of rows in the csv file
     nspec = len(param_df)
@@ -300,11 +300,11 @@ if __name__ == '__main__':
 
     # loop through the length of the spectra
     for i in range(nspec):
-        ntot = param_df['ntot'].values[i]
-        tex = param_df['tex'].values[i]
-        fwhm = param_df['fwhm'].values[i]
-        vlsr = param_df['vlsr'].values[i]
-        size = param_df['size'].values[i]
+        ntot = param_df['ntot_rf_pred'].values[i]
+        tex = param_df['tex_rf_pred'].values[i]
+        fwhm = param_df['fwhm_rf_pred'].values[i]
+        vlsr = param_df['vlsr_rf_pred'].values[i]
+        size = param_df['size_rf_pred'].values[i]
 
 
 
@@ -329,7 +329,7 @@ if __name__ == '__main__':
         data = [freq, intens]
 
 
-        file_path = '../spectra/reconstructed/'
+        file_path = 'data/spectra/reconstructed/'
 
         if not os.path.exists(file_path):
             os.makedirs(file_path)
@@ -357,11 +357,11 @@ if __name__ == '__main__':
         with open(file_path + text_file_name, 'w') as f:
             f.write('-----MODEL PARAMETERS-----\n')
             f.write('tcmb = ' + str(tcmb) + ' K' + '\n')
-            f.write('ntot = ' + str(param_df['ntot'].values[i]) + ' cm-2' '\n')
-            f.write('tex = ' + str(param_df['tex'].values[i]) + ' K' + '\n')
-            f.write('fwhm = ' + str(param_df['fwhm'].values[i]) + ' km/s' + '\n')
-            f.write('vlsr = ' + str(param_df['vlsr'].values[i]) + ' km/s' + '\n')
-            f.write('size = ' + str(param_df['size'].values[i]) + ' arsec' + '\n')
+            f.write('ntot = ' + str(param_df['ntot_rf_pred'].values[i]) + ' cm-2' '\n')
+            f.write('tex = ' + str(param_df['tex_rf_pred'].values[i]) + ' K' + '\n')
+            f.write('fwhm = ' + str(param_df['fwhm_rf_pred'].values[i]) + ' km/s' + '\n')
+            f.write('vlsr = ' + str(param_df['vlsr_rf_pred'].values[i]) + ' km/s' + '\n')
+            f.write('size = ' + str(param_df['size_rf_pred'].values[i]) + ' arsec' + '\n')
             f.write('\n')
             f.write('-----MODEL DATA-----\n')
             f.write('frequency (GHz), intensity (K)\n')
