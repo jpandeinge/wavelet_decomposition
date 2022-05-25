@@ -268,7 +268,7 @@ if __name__ == '__main__':
 
     # open a csv file with the parameters of the spectra
     # the first row is the header
-    param_df = pd.read_csv('data/5K_gen_files/predicted_parameters_xgb.csv')
+    param_df = pd.read_csv('data/5K_gen_files/predicted_parameters_rf_less.csv')
 
     # number of spectra to be simulated should be equal to the number of rows in the csv file
     nspec = len(param_df)
@@ -300,11 +300,11 @@ if __name__ == '__main__':
 
     # loop through the length of the spectra
     for i in range(nspec):
-        ntot = param_df['ntot_pred_xgb'].values[i]
-        tex =  param_df['tex_pred_xgb'].values[i]
-        fwhm = param_df['fwhm_pred_xgb'].values[i]
-        vlsr = param_df['vlsr_xgb_pred'].values[i]
-        size = param_df['size_pred_xgb'].values[i]
+        ntot = param_df['ntot_rf_pred'].values[i]
+        tex =  param_df['tex_rf_pred'].values[i]
+        fwhm = param_df['fwhm_rf_pred'].values[i]
+        vlsr = param_df['vlsr_rf_pred'].values[i]
+        size = param_df['size_rf_pred'].values[i]
 
 
 
@@ -329,12 +329,12 @@ if __name__ == '__main__':
         data = [freq, intens]
 
 
-        file_path = 'data/spectra/reconstructed/xgb/'
+        file_path = 'data/spectra/reconstructed/rf/'
 
         if not os.path.exists(file_path):
             os.makedirs(file_path)
         # file_name = 'recon_param_data_plot' + str(i) + '.png'
-        text_file_name = 'recon_param_data_plot' + str(i) + '.txt'
+        text_file_name = 'recon_param_data_less' + str(i) + '.txt'
         # file_path = os.path.join(file_path, file_name)
         #
         # # plot the spectrum using subplots
@@ -357,11 +357,11 @@ if __name__ == '__main__':
         with open(file_path + text_file_name, 'w') as f:
             f.write('-----MODEL PARAMETERS-----\n')
             f.write('tcmb = ' + str(tcmb) + ' K' + '\n')
-            f.write('ntot = ' + str(param_df['ntot_pred_xgb'].values[i]) + ' cm-2' '\n')
-            f.write('tex = ' + str( param_df['tex_pred_xgb'].values[i]) + ' K' + '\n')
-            f.write('fwhm = ' + str(param_df['fwhm_pred_xgb'].values[i]) + ' km/s' + '\n')
-            f.write('vlsr = ' + str(param_df['vlsr_xgb_pred'].values[i]) + ' km/s' + '\n')
-            f.write('size = ' + str(param_df['size_pred_xgb'].values[i]) + ' arsec' + '\n')
+            f.write('ntot = ' + str(param_df['ntot_rf_pred'].values[i]) + ' cm-2' '\n')
+            f.write('tex = ' + str( param_df['tex_rf_pred'].values[i]) + ' K' + '\n')
+            f.write('fwhm = ' + str(param_df['fwhm_rf_pred'].values[i]) + ' km/s' + '\n')
+            f.write('vlsr = ' + str(param_df['vlsr_rf_pred'].values[i]) + ' km/s' + '\n')
+            f.write('size = ' + str(param_df['size_rf_pred'].values[i]) + ' arsec' + '\n')
             f.write('\n')
             f.write('-----MODEL DATA-----\n')
             f.write('frequency (GHz), intensity (K)\n')
