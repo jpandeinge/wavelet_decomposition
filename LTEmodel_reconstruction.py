@@ -268,7 +268,7 @@ if __name__ == '__main__':
 
     # open a csv file with the parameters of the spectra
     # the first row is the header
-    param_df = pd.read_csv('data/5K_gen_files/predicted_parameters_rf_less.csv')
+    param_df = pd.read_csv('data/5K_gen_files/predicted_parameters_rf.csv')
 
     # number of spectra to be simulated should be equal to the number of rows in the csv file
     nspec = len(param_df)
@@ -291,8 +291,8 @@ if __name__ == '__main__':
     # freqmin = 220235
     # freqmax = 220800
     # calculate the minimum frequency of the simulated spectra in MHz from the vlsr velocity
-    freqmin = 238858 #238600
-    freqmax = 239215 #239180
+    freqmin = 220235 #238600
+    freqmax = 220800 #239180
     length = (freqmax - freqmin) * 10
     intensities = np.zeros(shape=(nspec, length))
     # print(intensities.shape)
@@ -334,7 +334,7 @@ if __name__ == '__main__':
         if not os.path.exists(file_path):
             os.makedirs(file_path)
         # file_name = 'recon_param_data_plot' + str(i) + '.png'
-        text_file_name = 'recon_param_data_less' + str(i) + '.txt'
+        text_file_name = 'recon_param_data' + str(i) + '.txt'
         # file_path = os.path.join(file_path, file_name)
         #
         # # plot the spectrum using subplots
