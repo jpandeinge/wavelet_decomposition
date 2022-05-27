@@ -264,7 +264,7 @@ if __name__ == '__main__':
     tcmb = 2.73
 
     # number of spectra to be simulated
-    nspec = 10000
+    nspec = 5000
 
 
 
@@ -284,8 +284,8 @@ if __name__ == '__main__':
     # freqmin = 220235
     # freqmax = 220800
     # calculate the minimum frequency of the simulated spectra in MHz from the vlsr velocity
-    freqmin = 238858 #238600
-    freqmax = 239215 #239180
+    freqmin = 220235 #238600
+    freqmax = 220800 #239180
     length = (freqmax - freqmin) * 10
     intensities = np.zeros(shape=(nspec, length))
     # print(intensities.shape)
@@ -320,7 +320,7 @@ if __name__ == '__main__':
         data = [freq, intens]
 
 
-        file_path = '../spectra/simulated_data1/'
+        file_path = 'data/spectra/simulated_data/'
 
         if not os.path.exists(file_path):
             os.makedirs(file_path)
