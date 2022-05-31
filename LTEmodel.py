@@ -284,8 +284,8 @@ if __name__ == '__main__':
     # freqmin = 220235
     # freqmax = 220800
     # calculate the minimum frequency of the simulated spectra in MHz from the vlsr velocity
-    freqmin = 220235 #238600
-    freqmax = 220800 #239180
+    freqmin = 238600 #238600
+    freqmax = 239180 #239180
     length = (freqmax - freqmin) * 10
     intensities = np.zeros(shape=(nspec, length))
     # print(intensities.shape)
