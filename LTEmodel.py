@@ -264,18 +264,18 @@ if __name__ == '__main__':
     tcmb = 2.73
 
     # number of spectra to be simulated
-    nspec = 5000
+    nspec = 10000
 
 
 
 
 
     # model parameters in defined ranges
-    ntot = 10**np.random.uniform(16, 18, nspec)
-    tex = np.random.uniform(10, 400, nspec)
-    fwhm = np.random.uniform(1, 10, nspec)
-    vlsr = np.random.uniform(-130, 130, nspec)
-    size = np.random.uniform(0.2, 2.5, nspec)
+    ntot = 10**np.random.uniform(16, 19, nspec)
+    tex = np.random.uniform(10, 401, nspec)
+    fwhm = np.random.uniform(1, 11, nspec)
+    vlsr = np.random.uniform(-60, 61, nspec)
+    size = np.random.uniform(0.2, 2.6, nspec)
 
     inputs = {'Column density': ntot, 'Excitation temperature': tex, 'FWHM': fwhm, 'Velocity': vlsr, 'Size': size}
     input_data = pd.DataFrame(inputs)
