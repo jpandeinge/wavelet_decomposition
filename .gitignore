@@ -157,3 +157,6 @@ Thumbs.db
 *.txt
 *.csv
 *.png
+
+# ignore test folder
+test/
