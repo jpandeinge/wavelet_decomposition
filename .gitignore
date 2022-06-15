@@ -159,4 +159,4 @@ Thumbs.db
 *.png
 
 # ignore test folder
-test/
+tests/
