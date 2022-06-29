@@ -306,8 +306,6 @@ if __name__ == '__main__':
         vlsr = param_df['vlsr_rf_pred'].values[i]
         size = param_df['size_rf_pred'].values[i]
 
-
-
         cpt1 = Component(db, [Species(137, ntot=ntot, tex=tex, fwhm=fwhm)],
                          isInteracting=False, vlsr=vlsr, size=size)
         cpt_list = [cpt1]
