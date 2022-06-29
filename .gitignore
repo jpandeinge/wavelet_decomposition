@@ -153,10 +153,11 @@ ehthumbs.db
 Thumbs.db
 
 
-# ignore .txt, .csv and .png files
+# ignore .txt, .csv, .png, .pdf files
 *.txt
 *.csv
 *.png
+*.pdf
 
 # ignore test folder
 tests/
