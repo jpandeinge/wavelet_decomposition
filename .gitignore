@@ -160,6 +160,7 @@ Thumbs.db
 *.pdf
 *.dat
 *.zip
+*.pkl
 
 # ignore test folder
 tests/
