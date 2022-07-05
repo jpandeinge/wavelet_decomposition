@@ -158,6 +158,8 @@ Thumbs.db
 *.csv
 *.png
 *.pdf
+*.dat
+*.zip
 
 # ignore test folder
 tests/
