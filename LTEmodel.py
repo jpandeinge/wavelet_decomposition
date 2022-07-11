@@ -320,13 +320,13 @@ if __name__ == '__main__':
         data = [freq, intens]
 
 
-        file_path = 'data/spectra/simulated_data/'
+        FILE_PATH = 'data/synthetic/spectra/simulated_data/'
 
-        if not os.path.exists(file_path):
-            os.makedirs(file_path)
+        if not os.path.exists(FILE_PATH):
+            os.makedirs(FILE_PATH)
         file_name = 'model_parameters_data' + str(i) + '.txt'
 
-        with open(file_path + file_name, 'w') as f:
+        with open(FILE_PATH + file_name, 'w') as f:
             f.write('-----MODEL PARAMETERS-----\n')
             f.write('tcmb = ' + str(tcmb) + ' K' + '\n')
             f.write('ntot = ' + str(input_data.iloc[i, 0]) + ' cm-2' '\n')
