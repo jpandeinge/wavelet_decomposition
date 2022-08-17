@@ -264,20 +264,20 @@ if __name__ == '__main__':
     tcmb = 2.73
 
     # number of spectra to be simulated
-    nspec = 10000
+    nspec = 20000
 
 
 
 
 
     # model parameters in defined ranges
-    ntot = 10**np.random.uniform(16, 19, nspec)
+    ntot = 10**np.random.uniform(16, 18, nspec)
     tex = np.random.uniform(10, 401, nspec)
     fwhm = np.random.uniform(1, 11, nspec)
-    vlsr = np.random.uniform(-60, 61, nspec)
-    size = np.random.uniform(0.2, 2.6, nspec)
+    vlsr = np.random.uniform(-50, 50, nspec)
+    size = np.random.uniform(0.1, 1.1, nspec)
 
-    inputs = {'Column density': ntot, 'Excitation temperature': tex, 'FWHM': fwhm, 'Velocity': vlsr, 'Size': size}
+    inputs = {'Column density': ntot, 'Excitation temperature': tex, 'FWHM': fwhm, 'Velocity': vlsr, 'Source Size': size}
     input_data = pd.DataFrame(inputs)
     input_data.take(np.random.permutation(input_data.shape[0]), axis=0)
 
@@ -320,7 +320,7 @@ if __name__ == '__main__':
         data = [freq, intens]
 
 
-        FILE_PATH = 'data/synthetic/spectra/simulated_data/'
+        FILE_PATH = 'data/synthetic/spectra/simulated_data/' 
 
         if not os.path.exists(FILE_PATH):
             os.makedirs(FILE_PATH)
@@ -336,7 +336,7 @@ if __name__ == '__main__':
             f.write('size = ' + str(input_data.iloc[i, 4]) + ' arsec' + '\n')
             f.write('\n')
             f.write('-----MODEL DATA-----\n')
-            f.write('frequency (GHz), intensity (K)\n')
+            f.write('Frequency(GHz), Intensity(K)\n')
 
             for x in zip(*data):
                 f.write(str(x[0]) + ' ' + str(x[1]) + '\n')

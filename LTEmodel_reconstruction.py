@@ -268,17 +268,18 @@ if __name__ == '__main__':
 
     # open a csv file with the parameters of the spectra
     # the first row is the header
-    param_df = pd.read_csv('data/10K_gen_files/predicted_parameters_rf.csv')
+    param_df = pd.read_csv('tests/nn_predictions.csv')
+
 
     # number of spectra to be simulated should be equal to the number of rows in the csv file
     nspec = len(param_df)
 
     # get the list of the parameters
-    # ntot = param_df['ntot'].values
-    # tex = param_df['tex'].values
-    # fwhm = param_df['fwhm'].values
-    # vlsr = param_df['vlsr'].values
-    # size = param_df['size'].values
+    ntot = param_df['ntot'].values
+    tex = param_df['tex'].values
+    fwhm = param_df['fwhm'].values
+    vlsr = param_df['vlsr'].values
+    size = param_df['size'].values
 
 
 
@@ -291,6 +292,9 @@ if __name__ == '__main__':
     # freqmin = 220235
     # freqmax = 220800
     # calculate the minimum frequency of the simulated spectra in MHz from the vlsr velocity
+    # freqmin = 238910 #238600 238.91 # OVBSERVARTIONAL FREQUENCY RANGE
+    # freqmax = 239180 #239180
+
     freqmin = 238600 #238600
     freqmax = 239180 #239180
     length = (freqmax - freqmin) * 10
@@ -300,11 +304,11 @@ if __name__ == '__main__':
 
     # loop through the length of the spectra
     for i in range(nspec):
-        ntot = param_df['ntot_rf_pred'].values[i]
-        tex =  param_df['tex_rf_pred'].values[i]
-        fwhm = param_df['fwhm_rf_pred'].values[i]
-        vlsr = param_df['vlsr_rf_pred'].values[i]
-        size = param_df['size_rf_pred'].values[i]
+        ntot = param_df['ntot'].values[i]
+        tex =  param_df['tex'].values[i]
+        fwhm = param_df['fwhm'].values[i]
+        vlsr = param_df['vlsr'].values[i]
+        size = param_df['size'].values[i]
 
         cpt1 = Component(db, [Species(137, ntot=ntot, tex=tex, fwhm=fwhm)],
                          isInteracting=False, vlsr=vlsr, size=size)
@@ -327,12 +331,13 @@ if __name__ == '__main__':
         data = [freq, intens]
 
 
-        file_path = 'data/spectra/reconstructed/rf/'
+        file_path = 'data/synthetic/spectra/reconstructed/nn_model/'
 
         if not os.path.exists(file_path):
             os.makedirs(file_path)
         # file_name = 'recon_param_data_plot' + str(i) + '.png'
         text_file_name = 'recon_param_data' + str(i) + '.txt'
+        # text_file_name = param_df['filename'].values[i] + '.txt'
         # file_path = os.path.join(file_path, file_name)
         #
         # # plot the spectrum using subplots
@@ -355,14 +360,14 @@ if __name__ == '__main__':
         with open(file_path + text_file_name, 'w') as f:
             f.write('-----MODEL PARAMETERS-----\n')
             f.write('tcmb = ' + str(tcmb) + ' K' + '\n')
-            f.write('ntot = ' + str(param_df['ntot_rf_pred'].values[i]) + ' cm-2' '\n')
-            f.write('tex = ' + str( param_df['tex_rf_pred'].values[i]) + ' K' + '\n')
-            f.write('fwhm = ' + str(param_df['fwhm_rf_pred'].values[i]) + ' km/s' + '\n')
-            f.write('vlsr = ' + str(param_df['vlsr_rf_pred'].values[i]) + ' km/s' + '\n')
-            f.write('size = ' + str(param_df['size_rf_pred'].values[i]) + ' arsec' + '\n')
+            f.write('ntot = ' + str(param_df['ntot'].values[i]) + ' cm-2' '\n')
+            f.write('tex = ' + str( param_df['tex'].values[i]) + ' K' + '\n')
+            f.write('fwhm = ' + str(param_df['fwhm'].values[i]) + ' km/s' + '\n')
+            f.write('vlsr = ' + str(param_df['vlsr'].values[i]) + ' km/s' + '\n')
+            f.write('size = ' + str(param_df['size'].values[i]) + ' arsec' + '\n')
             f.write('\n')
             f.write('-----MODEL DATA-----\n')
-            f.write('frequency (GHz), intensity (K)\n')
+            f.write('RestFreq(GHz) T(K)\n')
 
             for x in zip(*data):
                 f.write(str(x[0]) + ' ' + str(x[1]) + '\n')
