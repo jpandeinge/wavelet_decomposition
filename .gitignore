@@ -161,6 +161,7 @@ Thumbs.db
 *.dat
 *.zip
 *.pkl
+*.pt
 
 # ignore test folder
 tests/
