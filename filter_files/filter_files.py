@@ -38,17 +38,12 @@ def get_filenames(SIMULATED_FILES_PATH, model_type):
 
     elif model_type == 'lte':
         filename_list.clear() # clear the list
-       # check if the file is in the list of files depending on the model type 
-        if model_type == 'tree':
-            tree_file_indices = tree_based_file_indices_model
-            for file_index in tree_file_indices[1]:
-                for index, file in enumerate(files):
-                    if file_index == index:
-                        filename_list.append(file.split('/')[-1])
+        tree_file_indices = tree_based_file_indices_model
+        nn_file_indices = nn_based_file_indices_model
 
-        elif model_type == 'nn':
-            nn_file_indices = nn_based_file_indices_model
-            for file_index in nn_file_indices[1]:
+        list_of_model_file_indices = [tree_file_indices, nn_file_indices]
+        for model_file in list_of_model_file_indices:
+            for file_index in model_file[1]:
                 for index, file in enumerate(files):
                     if file_index == index:
                         filename_list.append(file.split('/')[-1])
