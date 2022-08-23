@@ -264,7 +264,7 @@ if __name__ == '__main__':
     tcmb = 2.73
 
     # number of spectra to be simulated
-    nspec = 20000
+    nspec = 30000
 
 
 
@@ -274,7 +274,7 @@ if __name__ == '__main__':
     ntot = 10**np.random.uniform(16, 18, nspec)
     tex = np.random.uniform(10, 401, nspec)
     fwhm = np.random.uniform(1, 11, nspec)
-    vlsr = np.random.uniform(-50, 50, nspec)
+    vlsr = np.random.uniform(-60, 60, nspec)
     size = np.random.uniform(0.1, 1.1, nspec)
 
     inputs = {'Column density': ntot, 'Excitation temperature': tex, 'FWHM': fwhm, 'Velocity': vlsr, 'Source Size': size}
