@@ -1,3 +1,4 @@
+import sys
 import pandas as pd
 import numpy as np
 import sqlite3
@@ -266,23 +267,20 @@ if __name__ == '__main__':
 
 
 
-    # open a csv file with the parameters of the spectra
-    # the first row is the header
-    param_df = pd.read_csv('tests/nn_predictions.csv')
+     # open a csv file with the parameters of the spectra  the first row is the header
+    PARAMETERS_OUTPUT = 'data/synthetic/generated_files/'
 
+    rf_params_df = pd.read_csv(PARAMETERS_OUTPUT + 'predicted_parameters_rf.csv')
+    xgb_params_df = pd.read_csv(PARAMETERS_OUTPUT + 'predicted_parameters_xgb.csv')
+    xgb_tuned_params_df = pd.read_csv(PARAMETERS_OUTPUT + 'predicted_parameters_xgb_tuned.csv')
+    # nn_model_params_df = pd.read_csv(PARAMETERS_OUTPUT + 'predicted_parameters_nn.csv')
+    
 
-    # number of spectra to be simulated should be equal to the number of rows in the csv file
-    nspec = len(param_df)
-
-    # get the list of the parameters
-    ntot = param_df['ntot'].values
-    tex = param_df['tex'].values
-    fwhm = param_df['fwhm'].values
-    vlsr = param_df['vlsr'].values
-    size = param_df['size'].values
-
-
-
+    # get the number of spectra to be generated from all the dataframe above
+    n_rf = len(rf_params_df)
+    n_xgb = len(xgb_params_df)
+    n_xgb_tuned = len(xgb_tuned_params_df)
+    # n_nn = len(nn_model_params_df)
 
 
     # inputs = {'Column density': ntot, 'Excitation temperature': tex, 'FWHM': fwhm, 'Velocity': vlsr, 'Size': size}
@@ -295,20 +293,39 @@ if __name__ == '__main__':
     # freqmin = 238910 #238600 238.91 # OVBSERVARTIONAL FREQUENCY RANGE
     # freqmax = 239180 #239180
 
+     # calculate the minimum frequency of the simulated spectra in MHz from the vlsr velocity
     freqmin = 238600 #238600
     freqmax = 239180 #239180
     length = (freqmax - freqmin) * 10
-    intensities = np.zeros(shape=(nspec, length))
+    # calculate the intenity to be simulated for each of models
+    intensities = np.zeros(shape=(n_rf, length))
     # print(intensities.shape)
     # print(length)
 
-    # loop through the length of the spectra
-    for i in range(nspec):
-        ntot = param_df['ntot'].values[i]
-        tex =  param_df['tex'].values[i]
-        fwhm = param_df['fwhm'].values[i]
-        vlsr = param_df['vlsr'].values[i]
-        size = param_df['size'].values[i]
+    for i in range(n_rf):
+        ntot = rf_params_df['ntot'].values[i]
+        tex =  rf_params_df['tex'].values[i]
+        fwhm = rf_params_df['fwhm'].values[i]
+        vlsr = rf_params_df['vlsr'].values[i]
+        size = rf_params_df['size'].values[i]
+
+    
+    for i in range(n_xgb):
+        ntot = xgb_params_df['ntot'].values[i]
+        tex = xgb_params_df['tex'].values[i]
+        fwhm = xgb_params_df['fwhm'].values[i]
+        vlsr = xgb_params_df['vlsr'].values[i]
+        size = xgb_params_df['size'].values[i]
+    
+    
+    for i in range(n_xgb_tuned):
+        ntot = xgb_tuned_params_df['ntot'].values[i]
+        tex = xgb_tuned_params_df['tex'].values[i]
+        fwhm = xgb_tuned_params_df['fwhm'].values[i]
+        vlsr = xgb_tuned_params_df['vlsr'].values[i]
+        size = xgb_tuned_params_df['size'].values[i]
+
+
 
         cpt1 = Component(db, [Species(137, ntot=ntot, tex=tex, fwhm=fwhm)],
                          isInteracting=False, vlsr=vlsr, size=size)
@@ -319,62 +336,98 @@ if __name__ == '__main__':
                           tc=tc, tcmb=tcmb, dfmhz=0.01)
 
 
-        # print("freq, cpt1", [tr.f_trans_mhz for tr in model.get_transition_list(cpt1)])
-        # print("tau0, cpt1", [tr.tau0 for tr in model.get_transition_list(cpt1)])
-        # print("tau0, cpt2", [tr.tau0 for tr in model.get_transition_list(cpt2)])
-
         model.compute_model()
-        intens = model.intensities
-        intensities[i, :] = intens[:length]
+
+        
+        # get the intesities for each of the models
+        rf_intens  = model.intensities
+        xgb_intens = model.intensities
+        xgb_tuned_intens = model.intensities
+        # nn_intens = model.intensities
+
+
+        intensities[i] = rf_intens[:length]
+
+
         freq = model.frequencies * 1.e-3
 
-        data = [freq, intens]
+        rf_data = [freq, rf_intens]
+        xgb_data = [freq, xgb_intens]
+        xgb_tuned_data = [freq, xgb_tuned_intens]
 
 
-        file_path = 'data/synthetic/spectra/reconstructed/nn_model/'
+         # data = [freq, intens]
+        RF_FILE_PATH = 'data/synthetic/spectra/reconstructed/rf/'
+        XGB_FILE_PATH = 'data/synthetic/spectra/reconstructed/xgb/'
+        XGB_TUNED_FILE_PATH = 'data/synthetic/spectra/reconstructed/xgb_tuned/'
+        NN_FILE_PATH = 'data/synthetic/spectra/reconstructed/nn/'
 
-        if not os.path.exists(file_path):
-            os.makedirs(file_path)
-        # file_name = 'recon_param_data_plot' + str(i) + '.png'
+        for path in [RF_FILE_PATH, XGB_FILE_PATH, XGB_TUNED_FILE_PATH]:
+            if not os.path.exists(path):
+                os.makedirs(path)
+
+         # file_name = 'recon_param_data_plot' + str(i) + '.png'
         text_file_name = 'recon_param_data' + str(i) + '.txt'
-        # text_file_name = param_df['filename'].values[i] + '.txt'
-        # file_path = os.path.join(file_path, file_name)
-        #
-        # # plot the spectrum using subplots
-        # fig, ax = plt.subplots(figsize=(10, 6))
-        # ax.plot(freq, intens, color='blue')
-        # ax.set_ylim(0, 1.1 * np.max(intens))
-        # ax.set_xlabel('Frequency [GHz]')
-        # ax.set_ylabel('Intensity [K]')
-        # title = ''
-        # for cpt in cpt_list:
-        #     title += '\n' 'size: ' + str(cpt.size) + ' arsec, ' 'vlsr: ' + str(cpt.vlsr) + ' km/s'
-        #     for sp in cpt.species_list:
-        #         title += '\n' + 'ntot: ' + str(sp.ntot) + ' cm-2, ''fwhm: ' + str(sp.fwhm) + ' km/s, ' 'tex: ' + str(sp.tex) + ' K '
-        # ax.set_title(title)
-        # plt.show()
-        # fig.savefig(file_path)
+    
+        model_paths = [RF_FILE_PATH, XGB_FILE_PATH, XGB_TUNED_FILE_PATH]
+        # create a  list of all the dataframe of all the models
+        model_dataframes = [rf_params_df, xgb_params_df, xgb_tuned_params_df]   
 
-        # file_name = 'model_parameters_data' + str(i) + '.txt'
+         # loop over all the models and save the spectra to the corresponding path using the appropriate dataframe
+        for path, dataframe in zip(model_paths, model_dataframes):
+            if path == RF_FILE_PATH:
+                with open(path + text_file_name, 'w') as f:
+                    f.write('-----MODEL PARAMETERS-----\n')
+                    f.write('tcmb = ' + str(tcmb) + ' K' + '\n')
+                    f.write('ntot = ' + str(model_dataframes[0]['ntot'].values[i]) + ' cm-2' '\n')
+                    f.write('tex = ' + str( model_dataframes[0]['tex'].values[i]) + ' K' + '\n')
+                    f.write('fwhm = ' + str(model_dataframes[0]['fwhm'].values[i]) + ' km/s' + '\n')
+                    f.write('vlsr = ' + str(model_dataframes[0]['vlsr'].values[i]) + ' km/s' + '\n')
+                    f.write('size = ' + str(model_dataframes[0]['size'].values[i]) + ' arsec' + '\n')
+                    f.write('\n')
+                    f.write('-----MODEL DATA-----\n')
+                    f.write('RestFreq(GHz) T(K)\n')
+    
+                    for x in zip(*rf_data):
+                        f.write(str(x[0]) + ' ' + str(x[1]) + '\n')
+                    f.close()
 
-        with open(file_path + text_file_name, 'w') as f:
-            f.write('-----MODEL PARAMETERS-----\n')
-            f.write('tcmb = ' + str(tcmb) + ' K' + '\n')
-            f.write('ntot = ' + str(param_df['ntot'].values[i]) + ' cm-2' '\n')
-            f.write('tex = ' + str( param_df['tex'].values[i]) + ' K' + '\n')
-            f.write('fwhm = ' + str(param_df['fwhm'].values[i]) + ' km/s' + '\n')
-            f.write('vlsr = ' + str(param_df['vlsr'].values[i]) + ' km/s' + '\n')
-            f.write('size = ' + str(param_df['size'].values[i]) + ' arsec' + '\n')
-            f.write('\n')
-            f.write('-----MODEL DATA-----\n')
-            f.write('RestFreq(GHz) T(K)\n')
+            elif path == XGB_FILE_PATH:
+                with open(path + text_file_name, 'w') as f:
+                    f.write('-----MODEL PARAMETERS-----\n')
+                    f.write('tcmb = ' + str(tcmb) + ' K' + '\n')
+                    f.write('ntot = ' + str(model_dataframes[1]['ntot'].values[i]) + ' cm-2' '\n')
+                    f.write('tex = ' + str( model_dataframes[1]['tex'].values[i]) + ' K' + '\n')
+                    f.write('fwhm = ' + str(model_dataframes[1]['fwhm'].values[i]) + ' km/s' + '\n')
+                    f.write('vlsr = ' + str(model_dataframes[1]['vlsr'].values[i]) + ' km/s' + '\n')
+                    f.write('size = ' + str(model_dataframes[1]['size'].values[i]) + ' arsec' + '\n')
+                    f.write('\n')
+                    f.write('-----MODEL DATA-----\n')
+                    f.write('RestFreq(GHz) T(K)\n')
+    
+                    for x in zip(*xgb_data):
+                        f.write(str(x[0]) + ' ' + str(x[1]) + '\n')
+                    f.close()
 
-            for x in zip(*data):
-                f.write(str(x[0]) + ' ' + str(x[1]) + '\n')
-            f.close()
-
-        # create two subplots which are together and 3D scatter Plots
-        
+            elif path == XGB_TUNED_FILE_PATH:
+                with open(path + text_file_name, 'w') as f:
+                    f.write('-----MODEL PARAMETERS-----\n')
+                    f.write('tcmb = ' + str(tcmb) + ' K' + '\n')
+                    f.write('ntot = ' + str(model_dataframes[2]['ntot'].values[i]) + ' cm-2' '\n')
+                    f.write('tex = ' + str( model_dataframes[2]['tex'].values[i]) + ' K' + '\n')
+                    f.write('fwhm = ' + str(model_dataframes[2]['fwhm'].values[i]) + ' km/s' + '\n')
+                    f.write('vlsr = ' + str(model_dataframes[2]['vlsr'].values[i]) + ' km/s' + '\n')
+                    f.write('size = ' + str(model_dataframes[2]['size'].values[i]) + ' arsec' + '\n')
+                    f.write('\n')
+                    f.write('-----MODEL DATA-----\n')
+                    f.write('RestFreq(GHz) T(K)\n')
+    
+                    for x in zip(*xgb_tuned_data):
+                        f.write(str(x[0]) + ' ' + str(x[1]) + '\n')
+                    f.close()
+            else:
+                print('Error: model path not found')
+                sys.exit()
 
 
     # for icpt, cpt in enumerate(cpt_list):
