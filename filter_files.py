@@ -53,6 +53,6 @@ def get_filenames(SIMULATED_FILES_PATH, model_type):
                     if file_index == index:
                         filename_list.append(file.split('/')[-1])
     else:
-        raise ValueError('model_type must be either "tree" or  "nn"')
+        raise ValueError('model_type must be either "lte", "tree" or  "nn"')
     
     return filename_list[:]
