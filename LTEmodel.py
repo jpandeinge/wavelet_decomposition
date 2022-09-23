@@ -271,10 +271,10 @@ if __name__ == '__main__':
 
 
     # model parameters in defined ranges
-    ntot = 10**np.random.uniform(16, 18, nspec)
-    tex = np.random.uniform(10, 401, nspec)
-    fwhm = np.random.uniform(1, 11, nspec)
-    vlsr = np.random.uniform(-60, 60, nspec)
+    ntot = 10**np.random.uniform(14, 18, nspec)
+    tex = np.random.uniform(10, 400, nspec)
+    fwhm = np.random.uniform(1, 10, nspec)
+    vlsr = np.random.uniform(-50, 50, nspec)
     size = np.random.uniform(0.1, 1.1, nspec)
 
     inputs = {'Column density': ntot, 'Excitation temperature': tex, 'FWHM': fwhm, 'Velocity': vlsr, 'Source Size': size}

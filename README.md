@@ -1,13 +1,13 @@
 ## Discrete Wavelet Decomposition (DWT)
 
-The wavelet decomposition for species of methyl cyanide ($CH 3CN$) is implemented simply in this case.
+The wavelet decomposition for species of methyl cyanide ($CH_{3}CN$) is implemented simply in this case.
 
-1. First, using the script `LTEmodel.py`, we create synthetic data. The data was therefore saved in the folder labelled `data`. The discrete wavelet transform is then carried out in the notebook `wavelet_decompositin_10k.ipynb` after the data has been loaded.
+1. We first generate synthetic data using the `LTEmodel.py` script. As a result, the data is saved in the "data/synthetic" folder. After the data has been loaded, the discrete wavelet transform is performed in the notebook "wavelet decomposition.ipynb"
 
-2. In addition, we use the decomposed signal's approximation coefficients as our features for our machine learning models. As a result, we are able to predict the signal's parameters, such as the gradient's size, size, and velocity, as well as its column density and excitation temperature, using the discrete wavelet transform decomposition methon with the `Daubechies of order 1` as the mother wavelet at level 7.
+2. In addition, we include our machine learning models using the approximation coefficients of the decomposed signal. By employing the discrete wavelet transform decomposition method with the "Daubechies of order 1" as the mother wavelet at level 6, we are able to forecast the signal's properties, such as the gradient's size, size, and velocity, as well as its column density and excitation temperature.
 
-3. The `10K_gen_files` folder is then where the predicted parameters are saved in a csv file. Additionally, we created the reconstructed signal from the predicted parameters using `LTEmodel_reconstruction.py`.
+3. The predicted parameters are then recorded in a csv file in the "data/synthetic/generated_files" folder. Additionally, we used 'LTEmodel reconstruction.py' to rebuild the signal from the predicted parameters.
 
-4. Next, by matching the spectra that were used in the evaluation of our machine learning models, we compare the original synthentic spectra with the reconstructed spectra derived from the predicted parameters.
+4. Next, we compare the initial synthesised spectra with the reconstructed spectra produced from the predicted parameters by matching the spectra that were utilised in the assessment of our machine learning models.
 
-5. The best model is then evaluated using observational data from the same species collected by the Atacama Large Millimeter Array (ALMA) telescope. The fundamental preprocessing of the data is carried out in the notebook `observational_data_predictions.ipynb`, where we kept the frequency range of the data at `238.60 GHz - 239.18 GHz` to match the frequency range of the synthetic data. The data were interpolated to have the same number of points as the synthetic data, and the best model was used to make parameter predictions.
+5. Observational data from the same species gathered by the Atacama Large Millimeter Array (ALMA) telescope are then used to assess the best model. In order to match the frequency range of the observational data, we kept the frequency range of the data at `238.91 GHz - 239.18 GHz` for the purposes of the basic preprocessing of the data, which was done in the notebook `observational_data_predictions.ipynb`. The best model was used to forecast the parameters after the data were interpolated to have the same amount of points as the synthetic data.
